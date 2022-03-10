@@ -30,4 +30,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           issuesOpened: |
             👋 @{{ author }}，感谢你给我们提出 issue。
-            请根据 issue 模版确保问题的背景信息的完善，我们将调查并尽快回复你。
+            请根据 issue 模版确保背景信息的完善，我们将调查并尽快回复你。
+            ${{ steps.assignees.outputs.contributors }} 是我们的组件主要贡献者。
