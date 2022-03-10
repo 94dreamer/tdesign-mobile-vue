@@ -8,6 +8,13 @@ jobs:
   mark-duplicate:
     runs-on: ubuntu-latest
     steps:
+      - uses: wow-actions/auto-comment@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          issuesOpened: |
+            👋 @{{ author }}，感谢给 TDesign 提出了 issue。
+            请根据 issue 模版确保背景信息的完善，我们将调查并尽快回复你。
+
       # https://docs.github.com/cn/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#issues
       - uses: 94dreamer/issue-assignees@main
         id: assignees
@@ -25,10 +32,21 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
           assignees: ${{ steps.assignees.outputs.contributors }}
 
-      - uses: wow-actions/auto-comment@v1
+      - run: |
+          contributors=${{ steps.assignees.outputs.contributors }}
+          contributorstring=${contributors//,/ @}
+          echo "::set-output name=string::@$contributorstring"
+        id: contributors
+
+      - name: 通知贡献者
+        if: steps.assignees.outputs.contributors != ''
+        uses: actions-cool/maintain-one-comment@v2.0.0
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          issuesOpened: |
-            👋 @{{ author }}，感谢你给我们提出 issue。
-            请根据 issue 模版确保背景信息的完善，我们将调查并尽快回复你。
-            ${{ steps.assignees.outputs.contributors }} 是我们的组件主要贡献者。
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            ♥️ 有劳 ${{ steps.contributors.outputs.string }} 
+            请尽快确认问题的有效性。
+            将下一步计划和可能需要的时间回复给 @{{ author }} 。
+            <!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->
+          number: ${{ github.event.issue.number }}
+          body-include: "<!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->"
