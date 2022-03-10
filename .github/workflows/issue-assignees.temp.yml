@@ -8,14 +8,13 @@ jobs:
   mark-duplicate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       # https://docs.github.com/cn/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#issues
       - uses: 94dreamer/issue-assignees@main
         id: assignees
         with:
           project_name: ${{github.event.repository.name}}
           issue_title: ${{github.event.issue.title}}
-          
+
       - run: echo ${{ steps.assignees.outputs.contributors }}
       - name: Add assigness
         if: steps.assignees.outputs.contributors != ''
