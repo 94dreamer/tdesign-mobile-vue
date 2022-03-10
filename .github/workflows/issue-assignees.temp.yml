@@ -46,7 +46,7 @@ jobs:
           body: |
             ♥️ 有劳 ${{ steps.contributors.outputs.string }} 
             请尽快确认问题的有效性。
-            将下一步计划和可能需要的时间回复给 @{{ github.event.issue.user.login }} 。
+            将下一步计划和可能需要的时间回复给 @${{ github.event.issue.user.login }} 。
             <!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->
           number: ${{ github.event.issue.number }}
           body-include: "<!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->"
