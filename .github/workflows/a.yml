@@ -9,6 +9,8 @@ jobs:
   mark-duplicate:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ${{ github.event.issue }}
+      - run: echo ${{ github.event.issue.title }}
       # https://docs.github.com/cn/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#issues
       - uses: 94dreamer/create-report@main
         with:
